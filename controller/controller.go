@@ -7,6 +7,7 @@ import (
 
 	pkg "github.com/MSyahidAlFajri/packagertm"
 	"github.com/gofiber/fiber/v2"
+	jobdesk "github.com/harisriyoni3/rtmpackage"
 	rtpkg "github.com/rofinafiin/rtm-package"
 )
 
@@ -118,4 +119,47 @@ func InsertDataRapat(c *fiber.Ctx) error {
 		"message":     "Data berhasil Tersimpan.",
 		"inserted_id": Inserted,
 	})
+}
+
+// JOB
+func InsertDataJob(c *fiber.Ctx) error {
+	database := config.MongoConn
+	var job jobdesk.Job
+	if err := c.BodyParser(&job); err != nil {
+		return err
+	}
+	Inserted := jobdesk.InsertDataJob(database,
+		job.Job_title,
+		job.Deskripsi,
+		job.Deadline,
+		job.Priority,
+	)
+	fmt.Println(Inserted)
+	return c.JSON(map[string]interface{}{
+		"status":      http.StatusOK,
+		"message":     "Data Job berhasil disimpan.",
+		"inserted_id": Inserted,
+	})
+}
+func GetDataJob(c *fiber.Ctx) error {
+	hp := c.Params("priority")
+	data := jobdesk.GetDataJob(hp, config.MongoConn, "data_job")
+	fmt.Println(data)
+	return c.JSON(data)
+}
+func GetDataJobtitle(c *fiber.Ctx) error {
+	hp := c.Params("job_title")
+	data := jobdesk.GetDataJobtitle(hp, config.MongoConn, "data_job")
+	fmt.Println(data)
+	return c.JSON(data)
+}
+func DeleteDataJob(c *fiber.Ctx) error {
+	hp := c.Params("priority")
+	data := jobdesk.DeleteDataJob(hp, config.MongoConn, "DeleteDataJob")
+	return c.JSON(data)
+}
+func DeleteDataJobtitle(c *fiber.Ctx) error {
+	hp := c.Params("job_title")
+	data := jobdesk.DeleteDataJobtitle(hp, config.MongoConn, "DeleteDataJob")
+	return c.JSON(data)
 }
