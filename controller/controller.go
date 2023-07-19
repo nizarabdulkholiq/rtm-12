@@ -2,10 +2,12 @@ package controller
 
 import (
 	"fmt"
-	"github.com/gofiber/fiber/v2"
-	rtpkg "github.com/rofinafiin/rtm-package"
 	"net/http"
 	"rtm/config"
+
+	pkg "github.com/MSyahidAlFajri/packagertm"
+	"github.com/gofiber/fiber/v2"
+	rtpkg "github.com/rofinafiin/rtm-package"
 )
 
 var usercol = "data_user"
@@ -75,4 +77,44 @@ func DeleteDataUser(c *fiber.Ctx) error {
 	hp := c.Params("handphone")
 	data := rtpkg.DeleteData(hp, config.MongoConn, "data_user")
 	return c.JSON(data)
+}
+
+func Getdatartm(c *fiber.Ctx) error {
+	namarapat := "Rapat Akreditasi"
+	getstats := pkg.GetDataRtm(namarapat, config.MongoConn, usercol)
+	fmt.Println(getstats)
+	return c.JSON(getstats)
+}
+
+func GetDataRtmByAgenda(c *fiber.Ctx) error {
+	hp := c.Params("agendarapat")
+	data := pkg.GetDataRtmFromAgenda(hp, config.MongoConn, "data_rtm")
+	fmt.Println(data)
+	return c.JSON(data)
+}
+
+func DeleteDataRtmFromLokasi(c *fiber.Ctx) error {
+	hp := c.Params("lokasirapat")
+	data := pkg.DeleteDataRtm(hp, config.MongoConn, "data_rtm")
+	return c.JSON(data)
+}
+
+func InsertDataRapat(c *fiber.Ctx) error {
+	database := config.MongoConn
+	var tambah pkg.DataRTM
+	if err := c.BodyParser(&tambah); err != nil {
+		return err
+	}
+	Inserted := rtpkg.InsertDataUser(database,
+		tambah.NamaRapat,
+		tambah.TanggalRapat,
+		tambah.LokasiRapat,
+		tambah.AgendaRapat,
+	)
+	fmt.Println(Inserted)
+	return c.JSON(map[string]interface{}{
+		"status":      http.StatusOK,
+		"message":     "Data berhasil Tersimpan.",
+		"inserted_id": Inserted,
+	})
 }

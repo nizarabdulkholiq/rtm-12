@@ -1,8 +1,9 @@
 package url
 
 import (
-	"github.com/gofiber/fiber/v2"
 	"rtm/controller"
+
+	"github.com/gofiber/fiber/v2"
 )
 
 func Web(page *fiber.App) {
@@ -13,4 +14,8 @@ func Web(page *fiber.App) {
 	page.Post("/insert", controller.InsertData)
 	page.Get("/userdata/:handphone", controller.GetDataUserbyPhone)
 	page.Delete("delete/:handphone", controller.DeleteDataUser)
+	page.Get("/rapat", controller.Getdatartm)
+	page.Post("/insertrapat", controller.InsertDataRapat)
+	page.Get("/datartm/:agenda", controller.GetDataRtmByAgenda)
+	page.Delete("delete/:lokasi", controller.DeleteDataRtmFromLokasi)
 }
