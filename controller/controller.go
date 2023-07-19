@@ -11,6 +11,7 @@ import (
 )
 
 var usercol = "data_user"
+var datartm = "data_rtm"
 
 //func WsWhatsAuthQR(c *websocket.Conn) {
 //	whatsauth.RunSocket(c, config.PublicKey, config.Usertables[:], config.Ulbimariaconn)
@@ -81,7 +82,7 @@ func DeleteDataUser(c *fiber.Ctx) error {
 
 func Getdatartm(c *fiber.Ctx) error {
 	namarapat := "Rapat Akreditasi"
-	getstats := pkg.GetDataRtm(namarapat, config.MongoConn, usercol)
+	getstats := pkg.GetDataRtm(namarapat, config.MongoConn, datartm)
 	fmt.Println(getstats)
 	return c.JSON(getstats)
 }
