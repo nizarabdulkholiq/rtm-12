@@ -3,14 +3,14 @@ package main
 import (
 	"log"
 
-	"rtm/config"
+	"github.com/nizarabdulkholiq/rtm/config"
 
 	"github.com/aiteung/musik"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 
 	"github.com/whatsauth/whatsauth"
 
-	"rtm/url"
+	"github.com/nizarabdulkholiq/rtm/url"
 
 	"github.com/gofiber/fiber/v2"
 )
